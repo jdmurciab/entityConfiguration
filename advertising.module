@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains advertising.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function advertising_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the advertising module.
+    case 'help.page.advertising':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}

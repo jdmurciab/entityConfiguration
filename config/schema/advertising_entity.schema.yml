@@ -1,0 +1,23 @@
+advertising.advertising_entity.*:
+  type: config_entity
+  label: 'Advertising entity config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string
+    url:
+      type: string
+      label: 'url'
+    select:
+      type: string
+      label: 'select'
+    height:
+      type: number
+      label: 'height'
+
+
