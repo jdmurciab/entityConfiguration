@@ -32,7 +32,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "uuid" = "uuid",
  *     "url" = "url",
  *     "select" = "select",
- *     "height" = "height"
+
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/advertising_entity/{advertising_entity}",
@@ -71,13 +71,55 @@ class AdvertisingEntity extends ConfigEntityBase implements AdvertisingEntityInt
    *
    * @var string
    */
-    protected $select;
+    protected $place;
 
-        /**
-   * The Advertising entity label.
+    /**
+   * Set the default place to put an AD.
    *
-   * @var string
+   * @param string $place
+   *   The place to set.
+   *
+   * @return string
    */
-    protected $height;
 
+  public $breakpoints;
+  /**
+   * Set the default breakpoints.
+   *
+   * @param string $breakpoints
+   *   The breakpoints to set.
+   *
+   * @return string
+   */
+  public function setPlace($place) {
+    return $this->set('place', $place);
+  }
+  /**
+   * Get the default place to put an AD.
+   *
+   * @return string
+   */
+  public function getPlace() {
+    return $this->get('place');
+  }
+
+  /**
+   * The Advertising entity breakpoints.
+   *
+   * @var array
+   */
+  
+  public function setBreakpoints($breakpoints) {
+    $serializer = \Drupal::service('serialization.phpserialize');
+    $this->breakpoints = $serializer->encode($breakpoints);
+  }
+  /**
+   * Get the breakpoints.
+   *
+   * @return string
+   */
+  public function getBreakpoints() {
+    $serializer = \Drupal::service('serialization.phpserialize');
+    return $serializer->decode($this->breakpoints);
+  }
 }

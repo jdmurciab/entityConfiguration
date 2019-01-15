@@ -13,11 +13,11 @@ advertising.advertising_entity.*:
     url:
       type: string
       label: 'url'
-    select:
+    place_select:
       type: string
-      label: 'select'
-    height:
-      type: number
-      label: 'height'
+      label: 'place'
+    breakpoints:
+      type: string
+      label: 'Breakpoints' 
 
 

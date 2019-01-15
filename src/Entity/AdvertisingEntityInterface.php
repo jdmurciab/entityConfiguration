@@ -10,4 +10,31 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 interface AdvertisingEntityInterface extends ConfigEntityInterface {
 
   // Add get/set methods for your configuration properties here.
+
+  public function getPlace();
+/**
+* Set the default place to put an AD.
+*
+* @param string $select
+* The place to set.
+*
+* @return string
+*/
+public function setPlace($place);
+/**
+* Get the breakpoints.
+*
+* @return string
+*/
+public function getBreakpoints();
+/**
+* Set the default breakpoints.
+*
+* @param string $breakpoints
+* The breakpoints to set.
+*
+* @return string
+*/
+public function setBreakpoints($breakpoints);
+
 }
