@@ -30,9 +30,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "id" = "id",
  *     "label" = "label",
  *     "uuid" = "uuid",
- *     "url" = "url",
- *     "select" = "select",
-
+ *     "address" = "address"
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/advertising_entity/{advertising_entity}",
@@ -64,20 +62,27 @@ class AdvertisingEntity extends ConfigEntityBase implements AdvertisingEntityInt
    *
    * @var string
    */
-    protected $url;
+    protected $address;
 
     /**
    * The Advertising entity label.
    *
    * @var string
    */
-    protected $place;
+    protected $select;
+
+    /**
+   * The Advertising entity label.
+   *
+   * @var string
+   */
+    protected $ID;
 
     /**
    * Set the default place to put an AD.
    *
    * @param string $place
-   *   The place to set.
+   *   The  select place to set.
    *
    * @return string
    */
@@ -91,15 +96,15 @@ class AdvertisingEntity extends ConfigEntityBase implements AdvertisingEntityInt
    *
    * @return string
    */
-  public function setPlace($place) {
-    return $this->set('place', $place);
+  public function setSelect($select) {
+    return $this->set('place', $select);
   }
   /**
-   * Get the default place to put an AD.
+   * Get the default select place to put an AD.
    *
    * @return string
    */
-  public function getPlace() {
+  public function getSelect() {
     return $this->get('place');
   }
 

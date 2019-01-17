@@ -45,18 +45,36 @@ class AdvertisingEntityForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
     $advertising_entity = $this->entity;
+    $class = get_class($this);
+
+
     // Disable caching for the form
     $form['#cache'] = ['max-age' => 0];
     
     // Do not flatten nested form fields
-    $form['#tree'] = TRUE;
+
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name'),
       '#maxlength' => 255,
       '#default_value' => $advertising_entity->label(),
       '#description' => $this->t("Name for the Advertising entity."),
-      '#required' => TRUE,
+      //'#required' => TRUE,
+      '#tree' => TRUE,
+      '#element_validate' => [
+        [$class, 'validateString'],
+      ],
+    ];
+
+    $form['ID']=[
+      '#type'=>'textfield',
+      '#title'=>$this->t('ID'),
+      '#default_value'=> $advertising_entity->get('ID'),
+      //'#required' => TRUE,
+      '#element_validate'=>[
+        [$class, 'validateIdpublicity'],
+      ],
+      '#description' => $this->t('only numbers'),
     ];
     $form['id'] = [
       '#type' => 'machine_name',
@@ -66,27 +84,21 @@ class AdvertisingEntityForm extends EntityForm {
       ],
       '#disabled' => !$advertising_entity->isNew(),
     ];
-/*     $form['url_ad'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Url'),
-      '#default_value' => $advertising_entity->url_ad,
-      '#description' => $this->t('The Url of AD'),
-      '#required' => TRUE,
+    $form['address']=[
+      '#type'=>'url',
+      '#title'=>$this->t('Url'),
+      '#description' => 'Add a custom url for your configuration',
+      '#default_value' => $advertising_entity->get('address'),
+      //'#required' => TRUE,
     ];
-    $form['id_ad'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('ID'),
-      '#maxlength' => 255,
-      '#default_value' => $advertising_entity->id_ad,
-      '#description' => $this->t('The unique id of each AD'),
-      '#required' => TRUE,
-    ]; */
+
     $data_taxonomy = $this->taxonomy_vocabulary_get_names();
     $data_content_type = $this->content_type_get_names();
-    $form['place'] = [
+    
+    $form['select'] = [
       '#type' => 'select',
-      '#title' => $this->t('Default Place'),
-      '#default_value' => $advertising_entity->getPlace(),
+      '#title' => $this->t('Default select Place'),
+      '#default_value' => $advertising_entity->get('select'),
       '#description' => $this->t('The place where the ad will be displayed'),
       '#options' => [
         'Taxonomies' => $data_taxonomy,
@@ -102,17 +114,19 @@ class AdvertisingEntityForm extends EntityForm {
       '#prefix' => '<div id="breakpoint-wrapper">',
       '#suffix' => '</div>',
     ];
+
     $width = $advertising_entity->getBreakpoints();
     if(!empty($width)) {
       $form_state->set('field_deltas', range(0,count($width['form']) - 1));
     }
+
     if ($form_state->get('field_deltas') == '') {
       $form_state->set('field_deltas', range(0,1));
     }
     
     $field_count = $form_state->get('field_deltas');
   
-  
+    
     foreach ($field_count as $delta) {
       $form['breakpoints']['form'][$delta] = [
         '#type' => 'fieldset',
@@ -168,7 +182,7 @@ class AdvertisingEntityForm extends EntityForm {
    */
 	public function addMoreRemove(array &$form, FormStateInterface $form_state) {
 		// Get the triggering item
-    $delta_remove = $form_state->getTriggeringElement()['#parents'][2];
+    $delta_remove = $form_state->getTriggeringElement()['#parents'][0];
     
     // Store our form state
     $field_deltas_array = $form_state->get('field_deltas');
@@ -220,7 +234,6 @@ class AdvertisingEntityForm extends EntityForm {
   
     // Rebuild the form
     $form_state->setRebuild();
-    
   }
   
   /**
@@ -233,8 +246,43 @@ class AdvertisingEntityForm extends EntityForm {
     return $form['breakpoints'];
   }
   /**
-   * {@inheritdoc}
+   * Helps to validate a fieldtext. It only allows string characters
+   * 
+   * @access public
+   * @param array $element Provides helper methods for Drupal render elements.
+   * @param object $form_state Contains the fields data submitted by the user
+   * @param array $complete_form The complete form structure.
+   * 
    */
+  public static function validateString(&$element, FormStateInterface $form_state, &$complete_form) {
+    $value = $element['#value'];
+     $value = strtolower($value);
+ 
+     if (!preg_match('/^[a-z ]{0,10}$/', $value)) {
+       $form_state->setError($element, t('Please. Write only data type string. Minimum 3 characters and Maximum 15'));
+     }
+   }
+   /**
+    * This function validates the pubicity id 
+    * 
+    * @access public
+    * @param array $element Provides helper methods for Drupal render elements.
+    * @param object $form_state Contains the fields data submitted by the user
+    * @param array $complete_form The complete form structure.
+    * 
+    */
+   public static function validateIdpublicity(&$element, FormStateInterface $form_state, &$complete_form){
+     $value = $element['#value'];
+     $value = strtolower($value);
+ 
+     if (!preg_match('/^[a-z0-9]{6}$/', $value)){
+       $form_state->setError($element, t('Please. Write only data type string. Minimum 3 characters and Maximum 15'));
+     }
+   }  
+    /**
+    * {@inheritdoc}
+    */
+
   public function save(array $form, FormStateInterface $form_state) {
     
     $advertising_entity = $this->entity;

@@ -5,17 +5,20 @@ advertising.advertising_entity.*:
     id:
       type: string
       label: 'ID'
+    ID:
+      type: number
+      label: ' id the advertising'
     label:
       type: label
       label: 'Label'
     uuid:
       type: string
-    url:
-      type: string
+    address:
+      type: url
       label: 'url'
-    place_select:
+    select:
       type: string
-      label: 'place'
+      label: 'select place'
     breakpoints:
       type: string
       label: 'Breakpoints' 

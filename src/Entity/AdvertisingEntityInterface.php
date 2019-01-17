@@ -11,7 +11,7 @@ interface AdvertisingEntityInterface extends ConfigEntityInterface {
 
   // Add get/set methods for your configuration properties here.
 
-  public function getPlace();
+  public function getSelect();
 /**
 * Set the default place to put an AD.
 *
@@ -20,7 +20,7 @@ interface AdvertisingEntityInterface extends ConfigEntityInterface {
 *
 * @return string
 */
-public function setPlace($place);
+public function setSelect($select);
 /**
 * Get the breakpoints.
 *
